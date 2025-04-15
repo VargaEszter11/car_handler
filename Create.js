@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .then(data => {
       document.getElementById('messages').innerText = `Sikeresen hozzáadtuk az autót: ${data.id}`;
-      form.reset();
+      window.location.href = 'index.html';
     })
     .catch(error => {
       document.getElementById('messages').innerText = `Hiba: ${error.message}`;

@@ -1,28 +1,34 @@
+const neptun = 'f9psja';
 const urlParams = new URLSearchParams(window.location.search);
-
-const neptun = urlParams.get('neptun');  
-const id = urlParams.get('id');   
-
-if (neptun && id) {
-    Details(neptun, id);
-} else {
-    document.getElementById('messages').innerText = "Hiba: Hiányzó paraméterek!";
-}
+const id = urlParams.get('id');
 
 function Details(neptun, id) {
+    console.log('Details függvény indítva, neptun:', neptun, 'id:', id);
+    
+    if (!id) {
+        console.error('Nincs ID megadva!');
+        document.getElementById('messages').innerText = 'Hiba: Nincs autó ID megadva!';
+        return;
+    }
+
     const url = `https://iit-playground.arondev.hu/api/${neptun}/car/${id}`;
+    console.log('Fetch URL:', url);
 
     fetch(url)
         .then(response => {
+            console.log('Válasz státusz:', response.status);
             if (!response.ok) {
-                throw new Error('Sikertelen lekérdezés');
+                throw new Error(`Sikertelen lekérdezés (${response.status})`);
             }
             return response.json();
         })
         .then(car => {
+            console.log('Kapott autó adatai:', car);
             const container = document.querySelector('.car-details-container');
+            
             if (!container) {
                 console.error("Hiányzik a .car-details-container elem!");
+                document.getElementById('messages').innerText = 'Hiba: Hiányzó HTML elem!';
                 return;
             }
 
@@ -41,22 +47,24 @@ function Details(neptun, id) {
                     <button onclick="editCar('${neptun}', ${car.id})">Módosítás</button>
                     <button onclick="window.location.href='index.html'">Vissza</button>
                 </div>
-                `;
-
+            `;
 
             container.appendChild(carDiv);
+            console.log('Autó adatok megjelenítve');
         })
         .catch(error => {
+            console.error('Hiba történt:', error);
             document.getElementById('messages').innerText = `Hiba: ${error.message}`;
         });
-
-        console.log('car-details-container:', document.querySelector('.car-details-container'));
-
 }
 
 function editCar(neptun, id) {
+    console.log('editCar hívva, neptun:', neptun, 'id:', id);
     sessionStorage.setItem('editCarId', id);
     window.location.href = `edit.html?neptun=${neptun}`;
 }
-  
-Details(neptun, id);
+
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM betöltve');
+    Details(neptun, id);
+});
