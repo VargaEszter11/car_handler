@@ -3,33 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Autók listája</title>
+  <title>Új autó hozzáadása</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div id="navbar"></div>
 
-  <header>
-    <h1>Autó Katalógus</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">Főoldal</a></li>
-      </ul>
-    </nav>
-  </header>
+  <div id="messages"></div>
 
-  <main>
-    <section id="messages">
-      <!-- Hibák vagy sikeres üzenetek jelenhetnek itt meg -->
-    </section>
-
-    <section id="car-list">
-      <h2>Elérhető autók</h2>
-      <div class="cars-container">
-        <!-- Autók dinamikusan ide kerülnek -->
-      </div>
-    </section>
-  </main>
+  <div class="form-container">
+    <h2>Új autó hozzáadása</h2>
+    <form id="addCarForm">
+      <label>Márka: <input type="text" name="brand" required /></label><br />
+      <label>Modell: <input type="text" name="model" required /></label><br />
+      <label>Elektromos: <input type="checkbox" name="electric" /></label><br />
+      <label>Fogyasztás (l/100km): <input type="number" name="fuelUse" step="0.1" /></label><br />
+      <label>Forgalomba helyezés dátuma: <input type="date" name="dayOfCommission" required /></label><br />
+      <label>Tulajdonos neve: <input type="text" name="owner" required /></label><br />
+      <button type="submit">Hozzáadás</button>
+    </form>
+  </div>
 
   <script src="App.js"></script>
+  <script src="Create.js"></script>
 </body>
 </html>

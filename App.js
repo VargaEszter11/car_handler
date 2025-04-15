@@ -3,7 +3,7 @@ function loadNavigation(){
         .then(response => response.text())
         .then(navHtml => {
             const body = document.querySelector('body');
-            body.insertAdjacentElement('afterbegin', navHtml);
+            body.insertAdjacentHTML('afterbegin', navHtml); // <-- ez a kulcs!
         })
         .catch(err => console.error(err));
 }
