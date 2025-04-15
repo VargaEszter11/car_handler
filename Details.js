@@ -70,29 +70,6 @@ function editCar(neptun, id) {
     window.location.href = `edit.html?neptun=${neptun}`;
 }
 
-// Add Delete function if not already present
-function Delete(neptun, id) {
-    const confirmed = confirm("Are you sure you want to delete this car?");
-    if (!confirmed) return;
-
-    fetch(`https://iit-playground.arondev.hu/api/${neptun}/car/${id}`, {
-        method: 'DELETE'
-    })
-    .then(response => {
-        if (!response.ok) {
-            return response.json().then(errorData => {
-                throw new Error(errorData.message || 'Delete failed');
-            });
-        }
-        alert("Successfully deleted!");
-        window.location.href = 'index.html';
-    })
-    .catch(error => {
-        alert(error.message);
-        document.getElementById('messages').innerText = `Error: ${error.message}`;
-    });
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded');
     Details(neptun, id);
