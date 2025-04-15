@@ -37,7 +37,12 @@ function Details(neptun, id) {
                 <p><strong>Fogyasztás:</strong> ${car.fuelUse} l/100km</p>
                 <p><strong>Forgalomba helyezés:</strong> ${car.dayOfCommission}</p>
                 <p><strong>Tulajdonos:</strong> ${car.owner}</p>
-            `;
+                <div class="button-group">
+                    <button onclick="editCar('${neptun}', ${car.id})">Módosítás</button>
+                    <button onclick="window.location.href='index.html'">Vissza</button>
+                </div>
+                `;
+
 
             container.appendChild(carDiv);
         })
@@ -49,4 +54,9 @@ function Details(neptun, id) {
 
 }
 
+function editCar(neptun, id) {
+    sessionStorage.setItem('editCarId', id);
+    window.location.href = `edit.html?neptun=${neptun}`;
+}
+  
 Details(neptun, id);

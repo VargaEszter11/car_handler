@@ -1,13 +1,10 @@
-// SessionStorage vagy egyéb módszerrel tárolt autó ID
-const carId = sessionStorage.getItem('carId');
-const neptun = 'f9psja'; // Neptun kód, amit dinamikusan be kell állítani
+const carId = sessionStorage.getItem('editCarId');
+const neptun = 'f9psja';
 
 if (carId) {
-  // Az API URL, amely az autó adatait lekéri az id alapján
   fetch(`https://iit-playground.arondev.hu/api/${neptun}/car/${carId}`)
     .then(response => response.json())
     .then(car => {
-      // A form mezők kitöltése az autó adatainak megfelelően
       document.querySelector('[name="brand"]').value = car.brand;
       document.querySelector('[name="model"]').value = car.model;
       document.querySelector('[name="electric"]').checked = car.electric;
@@ -24,14 +21,13 @@ if (carId) {
 }
 
 document.getElementById('editCarForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Megakadályozzuk az alapértelmezett form submitot
+    event.preventDefault();
   
-    const carId = sessionStorage.getItem('carId');
-    const neptun = 'f9psja'; // Neptun kód, amit dinamikusan be kell állítani
+    const carId = sessionStorage.getItem('editCarId');
+    const neptun = 'f9psja';
   
-    // Az új autó adatainak összegyűjtése
     const updatedCar = {
-      id: carId,  // Az id itt szerepel, mert PUT kérés esetén kell
+      id: carId,
       brand: document.querySelector('[name="brand"]').value,
       model: document.querySelector('[name="model"]').value,
       electric: document.querySelector('[name="electric"]').checked,
@@ -40,18 +36,17 @@ document.getElementById('editCarForm').addEventListener('submit', function(event
       owner: document.querySelector('[name="owner"]').value
     };
   
-    // PUT kérés az API felé
     fetch(`https://iit-playground.arondev.hu/api/${neptun}/car`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(updatedCar), // Az autó adatainak JSON formátumban
+      body: JSON.stringify(updatedCar),
     })
     .then(response => response.json())
     .then(data => {
       alert('Autó adatai sikeresen módosítva!');
-      // A módosított adatok megjelenítése (ha szükséges)
+      window.location.href = 'index.html';
     })
     .catch(error => {
       console.error('Hiba történt:', error);

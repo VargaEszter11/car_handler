@@ -12,17 +12,6 @@
     <div id="messages"></div>
     <div class="car-details-container"></div>
 
-    <button onclick="saveCarIdAndRedirect()">Módosítás</button>
-
-    <script>
-        function saveCarIdAndRedirect() {
-            const carId = car.id;
-            sessionStorage.setItem('carId', carId);
-            window.location.href = 'edit.html';
-        }
-    </script>
-    <button onclick="location.href='index.html'">Vissza</button>
-
     <script src="App.js"></script>
     <script src="Details.js"></script>   
 </body>
