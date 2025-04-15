@@ -14,16 +14,30 @@ function ListCars(neptun){
             container.innerHTML = '';
       
             cars.forEach(car => {
-              const carDiv = document.createElement('div');
-              carDiv.classList.add('car-card');
-      
-              carDiv.innerHTML = `
-                <h3>${car.brand} ${car.model}</h3>
-                <button onclick="location.href='details.html?neptun=${neptun}&id=${car.id}'">Részletek</button>
-              `;
-      
-              container.appendChild(carDiv);
-            });
+                const carDiv = document.createElement('div');
+                carDiv.classList.add('car-card');
+              
+                const title = document.createElement('h3');
+                title.textContent = `${car.brand} ${car.model}`;
+              
+                const detailsBtn = document.createElement('button');
+                detailsBtn.textContent = 'Részletek';
+                detailsBtn.addEventListener('click', () => {
+                  location.href = `details.html?neptun=${neptun}&id=${car.id}`;
+                });
+              
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Törlés';
+                deleteBtn.addEventListener('click', () => {
+                  Delete(neptun, car.id);
+                });
+              
+                carDiv.appendChild(title);
+                carDiv.appendChild(detailsBtn);
+                carDiv.appendChild(deleteBtn);
+                container.appendChild(carDiv);
+              });
+              
           })
           .catch(error => {
             document.getElementById('messages').innerText = `Hiba: ${error.message}`;
