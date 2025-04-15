@@ -43,17 +43,8 @@ function ListCars(neptun){
                     e.stopPropagation();
                     Delete(neptun, car.id);
                 });
-        
-                const infoDiv = document.createElement('div');
-                infoDiv.classList.add('car-info');
-                infoDiv.innerHTML = `
-                    <p><strong>Owner:</strong> ${car.owner}</p>
-                    <p><strong>Fuel Use:</strong> ${car.fuelUse} l/100km</p>
-                    <p><strong>Electric:</strong> ${car.electric ? 'Yes' : 'No'}</p>
-                `;
               
                 carDiv.appendChild(title);
-                carDiv.appendChild(infoDiv);
                 carDiv.appendChild(detailsBtn);
                 carDiv.appendChild(deleteBtn);
                 container.appendChild(carDiv);

@@ -45,6 +45,10 @@ function Details(neptun, id) {
 
             carDiv.innerHTML = `
                 <h3>${car.brand} ${car.model}</h3>
+                <p><strong>Electric:</strong> ${car.electric ? 'Yes' : 'No'}</p>
+                <p><strong>Fuel consumption:</strong> ${car.fuelUse} l/100km</p>
+                <p><strong>Commission date:</strong> ${car.dayOfCommission}</p>
+                <p><strong>Owner:</strong> ${car.owner}</p>
                 <div class="button-group">
                     <button onclick="editCar('${neptun}', ${car.id})">Módosítás</button>
                     <button onclick="window.location.href='index.html'">Vissza</button>
