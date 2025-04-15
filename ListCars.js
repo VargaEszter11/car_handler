@@ -3,16 +3,27 @@ const neptun = 'f9psja';
 function ListCars(neptun){
     const url = `https://iit-playground.arondev.hu/api/${neptun}/car`;
     fetch(url)
-        .then(response => {
+          .then(response => {
             if (!response.ok) {
-              throw new Error('Sikertelen lekérdezés');
+                return response.json().then(errorData => {
+                    const errorMessage = errorData.message || `Request failed with status ${response.status}`;
+                    throw new Error(errorMessage);
+                });
             }
             return response.json();
-          })
-          .then(cars => {
+        })
+        .then(cars => {
             const container = document.querySelector('.cars-container');
+            if (!container) {
+                throw new Error('Could not find cars container element');
+            }
             container.innerHTML = '';
-      
+        
+            if (!Array.isArray(cars) || cars.length === 0) {
+                container.innerHTML = '<p class="no-cars">No cars found</p>';
+                return;
+            }
+        
             cars.forEach(car => {
                 const carDiv = document.createElement('div');
                 carDiv.classList.add('car-card');
@@ -23,25 +34,37 @@ function ListCars(neptun){
                 const detailsBtn = document.createElement('button');
                 detailsBtn.textContent = 'Részletek';
                 detailsBtn.addEventListener('click', () => {
-                  location.href = `details.html?neptun=${neptun}&id=${car.id}`;
+                    location.href = `details.html?neptun=${neptun}&id=${car.id}`;
                 });
               
                 const deleteBtn = document.createElement('button');
                 deleteBtn.textContent = 'Törlés';
-                deleteBtn.addEventListener('click', () => {
-                  Delete(neptun, car.id);
+                deleteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    Delete(neptun, car.id);
                 });
+        
+                const infoDiv = document.createElement('div');
+                infoDiv.classList.add('car-info');
+                infoDiv.innerHTML = `
+                    <p><strong>Owner:</strong> ${car.owner}</p>
+                    <p><strong>Fuel Use:</strong> ${car.fuelUse} l/100km</p>
+                    <p><strong>Electric:</strong> ${car.electric ? 'Yes' : 'No'}</p>
+                `;
               
                 carDiv.appendChild(title);
+                carDiv.appendChild(infoDiv);
                 carDiv.appendChild(detailsBtn);
                 carDiv.appendChild(deleteBtn);
                 container.appendChild(carDiv);
-              });
-              
-          })
-          .catch(error => {
-            document.getElementById('messages').innerText = `Hiba: ${error.message}`;
-          });
+            });
+            
+            document.getElementById('messages').innerText = '';
+        })
+        .catch(error => {
+            console.error('Error loading cars:', error);
+            alert(error.message);
+        });
 }
 
 ListCars(neptun);

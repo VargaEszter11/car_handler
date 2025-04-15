@@ -3,11 +3,11 @@ const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get('id');
 
 function Details(neptun, id) {
-    console.log('Details függvény indítva, neptun:', neptun, 'id:', id);
+    console.log('Details function started, neptun:', neptun, 'id:', id);
     
     if (!id) {
-        console.error('Nincs ID megadva!');
-        document.getElementById('messages').innerText = 'Hiba: Nincs autó ID megadva!';
+        console.error('No ID provided!');
+        document.getElementById('messages').innerText = 'Error: No car ID provided!';
         return;
     }
 
@@ -16,20 +16,26 @@ function Details(neptun, id) {
 
     fetch(url)
         .then(response => {
-            console.log('Válasz státusz:', response.status);
+            console.log('Response status:', response.status);
+            
             if (!response.ok) {
-                throw new Error(`Sikertelen lekérdezés (${response.status})`);
+                return response.json().then(errorData => {
+                    const errorMessage = errorData.message || `Request failed (${response.status})`;
+                    throw new Error(errorMessage);
+                });
             }
             return response.json();
         })
         .then(car => {
-            console.log('Kapott autó adatai:', car);
+            if (!car.id) {
+                throw new Error('Invalid car data received');
+            }
+
+            console.log('Received car data:', car);
             const container = document.querySelector('.car-details-container');
             
             if (!container) {
-                console.error("Hiányzik a .car-details-container elem!");
-                document.getElementById('messages').innerText = 'Hiba: Hiányzó HTML elem!';
-                return;
+                throw new Error('Missing .car-details-container element!');
             }
 
             container.innerHTML = '';
@@ -39,32 +45,55 @@ function Details(neptun, id) {
 
             carDiv.innerHTML = `
                 <h3>${car.brand} ${car.model}</h3>
-                <p><strong>Elektromos:</strong> ${car.electric ? 'Igen' : 'Nem'}</p>
-                <p><strong>Fogyasztás:</strong> ${car.fuelUse} l/100km</p>
-                <p><strong>Forgalomba helyezés:</strong> ${car.dayOfCommission}</p>
-                <p><strong>Tulajdonos:</strong> ${car.owner}</p>
+                <p><strong>Electric:</strong> ${car.electric ? 'Yes' : 'No'}</p>
+                <p><strong>Fuel consumption:</strong> ${car.fuelUse} l/100km</p>
+                <p><strong>Commission date:</strong> ${car.dayOfCommission}</p>
+                <p><strong>Owner:</strong> ${car.owner}</p>
                 <div class="button-group">
-                    <button onclick="editCar('${neptun}', ${car.id})">Módosítás</button>
-                    <button onclick="window.location.href='index.html'">Vissza</button>
+                    <button onclick="editCar('${neptun}', ${car.id})">Edit</button>
+                    <button onclick="window.location.href='index.html'">Back</button>
                 </div>
             `;
 
             container.appendChild(carDiv);
-            console.log('Autó adatok megjelenítve');
+            document.getElementById('messages').innerText = '';
         })
         .catch(error => {
-            console.error('Hiba történt:', error);
-            document.getElementById('messages').innerText = `Hiba: ${error.message}`;
+            console.error('Error occurred:', error);
+            alert(error.message);
         });
 }
 
 function editCar(neptun, id) {
-    console.log('editCar hívva, neptun:', neptun, 'id:', id);
+    console.log('editCar called, neptun:', neptun, 'id:', id);
     sessionStorage.setItem('editCarId', id);
     window.location.href = `edit.html?neptun=${neptun}`;
 }
 
+// Add Delete function if not already present
+function Delete(neptun, id) {
+    const confirmed = confirm("Are you sure you want to delete this car?");
+    if (!confirmed) return;
+
+    fetch(`https://iit-playground.arondev.hu/api/${neptun}/car/${id}`, {
+        method: 'DELETE'
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(errorData => {
+                throw new Error(errorData.message || 'Delete failed');
+            });
+        }
+        alert("Successfully deleted!");
+        window.location.href = 'index.html';
+    })
+    .catch(error => {
+        alert(error.message);
+        document.getElementById('messages').innerText = `Error: ${error.message}`;
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM betöltve');
+    console.log('DOM loaded');
     Details(neptun, id);
 });

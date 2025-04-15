@@ -27,17 +27,31 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(response => {
       if (!response.ok) {
         return response.text().then(errorText => {
-          throw new Error(`Hiba: ${response.status} - ${errorText}`);
+          try {
+            const errorData = JSON.parse(errorText);
+            const rawMessage = errorData.message || errorData.error || errorText;
+            const cleanMessage = rawMessage
+              .replace(/["{}]/g, '')
+              .replace(/^error:/i, '')
+              .trim();
+              
+            throw new Error(cleanMessage || "Ismeretlen hiba történt");
+          } catch {
+            const cleanMessage = errorText
+              .replace(/["{}]/g, '')
+              .replace(/^.*?(message|error):/i, '')
+              .trim();
+              
+            throw new Error(cleanMessage || "Ismeretlen hiba történt");
+          }
         });
       }
       return response.json();
     })
-    .then(data => {
-      document.getElementById('messages').innerText = `Sikeresen hozzáadtuk az autót: ${data.id}`;
-      window.location.href = 'index.html';
-    })
     .catch(error => {
-      document.getElementById('messages').innerText = `Hiba: ${error.message}`;
+      console.error('Teljes hiba:', error);
+      alert(error.message);
+      document.getElementById('messages').innerText = error.message;
     });
   });
 });

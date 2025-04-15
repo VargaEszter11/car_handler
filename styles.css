@@ -16,14 +16,47 @@ body {
     font-weight: bold;
   }
   
+  button {
+    padding: 0.5rem 1rem;
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 1rem;
+  }
+  
+  button:hover {
+    background-color: #222;
+  }
+  
+  .car-details-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .cars-container {
+    display: flex;
+    flex-wrap: wrap; /* Ha több kártya van, akkor új sorba kerüljenek */
+    gap: 20px; /* Két kártya közötti távolság */
+    justify-content: flex-start; /* Balra igazítás, vagy 'center', ha középre szeretnéd */
+  }
+  
   .car-card {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    transition: box-shadow 0.2s ease;
+    width: calc(50% - 10px); /* 50% szélesség két kártyához, figyelembe véve a gap-ot */
+    box-sizing: border-box; /* Ne számolja bele a padding-ot és margót a szélességbe */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  @media (max-width: 768px) {
+    .car-card {
+      width: 100%; /* Mobilon 100%-os szélesség, hogy egy sorban legyen */
+    }
   }
   
   .car-card:hover {
@@ -45,29 +78,7 @@ body {
     background-color: #333;
   }
   
-  button {
-    padding: 0.5rem 1rem;
-    background-color: #444;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    font-size: 1rem;
-  }
-  
-  button:hover {
-    background-color: #222;
-  }
-  
-  .cars-container,
-  .car-details-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-nav {
+  nav {
     background-color: #333;
     padding: 1rem 2rem;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -129,4 +140,11 @@ nav {
   form button {
     margin-top: 1rem;
   }
+
+  .navbar a {
+    margin-right: 20px;
+    text-decoration: none;
+    color: white;
+  }
+
   
