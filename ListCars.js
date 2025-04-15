@@ -1,7 +1,8 @@
 const neptun = 'f9psja';
 
 function ListCars(neptun){
-    fetch(`https://iit-playground.arondev.hu/api/${neptun}/car`)
+    const url = `https://iit-playground.arondev.hu/api/${neptun}/car`;
+    fetch(url)
         .then(response => {
             if (!response.ok) {
               throw new Error('Sikertelen lekérdezés');
