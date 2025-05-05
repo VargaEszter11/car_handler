@@ -35,21 +35,21 @@ document.addEventListener('DOMContentLoaded', () => {
               .replace(/^error:/i, '')
               .trim();
               
-            throw new Error(cleanMessage || "Ismeretlen hiba történt");
+            throw new Error(cleanMessage || "Unknown error");
           } catch {
             const cleanMessage = errorText
               .replace(/["{}]/g, '')
               .replace(/^.*?(message|error):/i, '')
               .trim();
               
-            throw new Error(cleanMessage || "Ismeretlen hiba történt");
+            throw new Error(cleanMessage || "Unknown error");
           }
         });
       }
       return response.json();
     })
     .catch(error => {
-      console.error('Teljes hiba:', error);
+      console.error('Full error:', error);
       alert(error.message);
       document.getElementById('messages').innerText = error.message;
     });

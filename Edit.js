@@ -7,12 +7,12 @@ function loadCarData(carId, neptun) {
             .then(response => {
                 console.log('Load response status:', response.status);
                 if (!response.ok) {
-                    throw new Error(`Hiba a betöltéskor: ${response.status}`);
+                    throw new Error(`Error while loading: ${response.status}`);
                 }
                 return response.json();
             })
             .then(car => {
-                console.log('Betöltött autó adatai:', car);
+                console.log('Loaded car data:', car);
                 document.querySelector('[name="brand"]').value = car.brand;
                 document.querySelector('[name="model"]').value = car.model;
                 document.querySelector('[name="electric"]').checked = car.electric;
@@ -21,11 +21,11 @@ function loadCarData(carId, neptun) {
                 document.querySelector('[name="owner"]').value = car.owner;
             })
             .catch(error => {
-                console.error('Hiba történt a betöltés során:', error);
-                alert('Hiba történt a betöltés során!');
+                console.error('Error while loading:', error);
+                alert('Error while loading!');
             });
     } else {
-        alert('Nincs érvényes autó ID!');
+        alert('No valid car ID!');
     }
 }
 
@@ -35,7 +35,7 @@ function setupFormListener(neptun) {
         const carId = sessionStorage.getItem('editCarId');
         
         if (!carId) {
-            alert('Nincs érvényes autó ID!');
+            alert('No valid car ID!');
             return;
         }
 
@@ -49,7 +49,7 @@ function setupFormListener(neptun) {
             owner: document.querySelector('[name="owner"]').value
         };
 
-        console.log('Küldött adatok:', updatedCar);
+        console.log('Sent data:', updatedCar);
 
         fetch(`https://iit-playground.arondev.hu/api/${neptun}/car`, {
             method: 'PUT',
@@ -59,7 +59,7 @@ function setupFormListener(neptun) {
             body: JSON.stringify(updatedCar),
         })
         .then(response => {
-            console.log('Státusz kód:', response.status);
+            console.log('Status code:', response.status);
             if (!response.ok) {
                 return response.json().then(errorData => {
                     throw new Error(errorData.message || `HTTP ${response.status}`);
@@ -69,15 +69,15 @@ function setupFormListener(neptun) {
         })
         .then(data => {
             if (data.success === false) {
-                alert(`Hiba: ${data.message}`);
+                alert(`Error: ${data.message}`);
             } else {
-                alert('Sikeres módosítás!');
+                alert('Successfull modification!');
                 window.location.href = 'index.html';
             }
         })
         .catch(error => {
-            console.error('Hiba:', error);
-            alert(`Módosítási hiba: ${error.message}`);
+            console.error('Error:', error);
+            alert(`Modification error: ${error.message}`);
         });
     });
 }

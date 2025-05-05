@@ -32,13 +32,13 @@ function ListCars(neptun){
                 title.textContent = `${car.brand} ${car.model}`;
               
                 const detailsBtn = document.createElement('button');
-                detailsBtn.textContent = 'Részletek';
+                detailsBtn.textContent = 'Details';
                 detailsBtn.addEventListener('click', () => {
                     location.href = `details.html?neptun=${neptun}&id=${car.id}`;
                 });
               
                 const deleteBtn = document.createElement('button');
-                deleteBtn.textContent = 'Törlés';
+                deleteBtn.textContent = 'Delete';
                 deleteBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     Delete(neptun, car.id);
