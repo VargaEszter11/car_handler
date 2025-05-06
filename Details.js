@@ -27,7 +27,7 @@ function Details(neptun, id) {
             return response.json();
         })
         .then(car => {
-            if (!car.id) {
+            if (car.id == null) {
                 throw new Error('Invalid car data received');
             }
 
